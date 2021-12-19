@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_product_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    tools:context=".ProductDetailsActivity">
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="407dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="137dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text=""
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/specificationsText"
+        android:layout_width="407dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="420dp"
+        android:layout_marginEnd="137dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/specifications"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/productImage"
+        android:layout_width="353dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        android:contentDescription="@string/todo" />
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="112dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/price"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName" />
+
+    <TextView
+        android:id="@+id/productPriceText"
+        android:layout_width="200dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text=""
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productName" />
+
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="64dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/rating"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+    <TextView
+        android:id="@+id/productRatingText"
+        android:layout_width="50dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text=""
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="40dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="139dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/productRatingText"
+        app:layout_constraintTop_toBottomOf="@+id/productPriceText"
+        app:srcCompat="@drawable/ic_baseline_star_24" />
+
+    <TextView
+        android:id="@+id/mainSpecifications"
+        android:layout_width="415dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="0dp"
+        android:background="#8CAFDA"
+        android:gravity="start|center_vertical"
+        android:paddingStart="30dp"
+        android:text="@string/main_specifications"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/rearCamera"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/rear_camera"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/rearCameraSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/frontCamera"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/front_camera"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/frontCameraSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="85dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/screenResolution"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/screen_resolution"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/screenResolutionSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="126dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/screenSize"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/screen_size"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/screenSizeSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="167dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/processor"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/processor"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/processorSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="207dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/internalMemory"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/internal_memory"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/internalMemorySpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="247dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/ram"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/ram"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/ramSpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="409dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="287dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+
+        <TextView
+            android:id="@+id/battery"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/battery"
+            android:textColor="#263238"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+
+        <TextView
+            android:id="@+id/batterySpecs"
+            android:layout_width="260dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="0dp"
+            android:background="#8CAFDA"
+            android:gravity="start|center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text=""
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+    </TableRow>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
