@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:background="@color/blue"
     tools:context=".ProductDetailsActivity">
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_marginTop="250dp"
         android:layout_marginEnd="137dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text=""
+        android:text="Realme 8i"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,7 @@
         android:layout_marginStart="170dp"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text=""
+        android:text="8999"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +98,7 @@
         android:layout_marginStart="180dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text=""
+        android:text="4.3"
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,13 +124,13 @@
         android:background="#8CAFDA"
         android:gravity="start|center_vertical"
         android:paddingStart="30dp"
-        android:text="@string/main_specifications"
+        android:text='Main specifications:   6.6  inch Screen","4 GB RAM","64 GB ROM","Other OS","Dual SIM"'
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -138,7 +139,7 @@
         <TextView
             android:id="@+id/rearCamera"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -151,30 +152,30 @@
 
         <TextView
             android:id="@+id/rearCameraSpecs"
-            android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_width="259dp"
+            android:layout_height="46dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="Triple (50 MP, f1.8, Wide Angle Camera + 2 MP, f2.4 Camera"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="65dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/frontCamera"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -188,29 +189,29 @@
         <TextView
             android:id="@+id/frontCameraSpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="Single (16 MP, f2.05, Wide Angle Camera(3 sensor size, 1pixel size))"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="125dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/screenResolution"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -224,29 +225,29 @@
         <TextView
             android:id="@+id/screenResolutionSpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="1080 x 2412 pixels"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="126dp"
+        android:layout_marginTop="186dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/screenSize"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -260,29 +261,29 @@
         <TextView
             android:id="@+id/screenSizeSpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="6.6 inches (16.76 cms)"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="167dp"
+        android:layout_marginTop="247dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/processor"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -296,29 +297,29 @@
         <TextView
             android:id="@+id/processorSpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="MediaTek Helio G96"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="207dp"
+        android:layout_marginTop="307dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/internalMemory"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -332,29 +333,29 @@
         <TextView
             android:id="@+id/internalMemorySpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="64 GB"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="247dp"
+        android:layout_marginTop="367dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/ram"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -368,29 +369,29 @@
         <TextView
             android:id="@+id/ramSpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="4 GB"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="48dp"
+        android:layout_height="68dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="287dp"
+        android:layout_marginTop="427dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
 
         <TextView
             android:id="@+id/battery"
             android:layout_width="150dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
@@ -404,13 +405,13 @@
         <TextView
             android:id="@+id/batterySpecs"
             android:layout_width="260dp"
-            android:layout_height="38dp"
+            android:layout_height="58dp"
             android:layout_marginTop="0dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="5000 mAh"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
     </TableRow>

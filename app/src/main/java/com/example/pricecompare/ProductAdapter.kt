@@ -64,7 +64,7 @@ class ProductAdapter(private val context: Context,
             holder = ViewHolder()
             holder.thumbnailImageView = view.findViewById(R.id.recipe_list_thumbnail) as ImageView
             holder.titleTextView = view.findViewById(R.id.recipe_list_title) as TextView
-            holder.subtitleTextView = view.findViewById(R.id.recipe_list_subtitle) as TextView
+            //holder.subtitleTextView = view.findViewById(R.id.recipe_list_subtitle) as TextView
             holder.detailTextView = view.findViewById(R.id.recipe_list_detail) as TextView
 
             // 4
@@ -82,14 +82,14 @@ class ProductAdapter(private val context: Context,
 
         // 6
         val titleTextView = holder.titleTextView
-        val subtitleTextView = holder.subtitleTextView
+        //val subtitleTextView = holder.subtitleTextView
         val detailTextView = holder.detailTextView
         val thumbnailImageView = holder.thumbnailImageView
 
         val recipe = getItem(position) as Product
 
         titleTextView.text = recipe.modelName
-        subtitleTextView.text = recipe.rating.toString()
+        //subtitleTextView.text = recipe.rating.toString()
         detailTextView.text = recipe.lowestPrice.toString()
 
         Picasso.with(context).load(recipe.imageUrl).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView)
@@ -112,7 +112,7 @@ class ProductAdapter(private val context: Context,
 
     private class ViewHolder {
         lateinit var titleTextView: TextView
-        lateinit var subtitleTextView: TextView
+        //lateinit var subtitleTextView: TextView
         lateinit var detailTextView: TextView
         lateinit var thumbnailImageView: ImageView
     }

@@ -30,4 +30,15 @@
     <string name="internal_memory">Internal Memory</string>
     <string name="ram">RAM</string>
     <string name="battery">Battery</string>
+    <string name="thumbnail">thumbnail</string>
+    <string name="categories">Categories</string>
+    <string name="mobiles">Mobiles</string>
+    <string name="smartphones_and_accessories">Smartphones and accessories</string>
+    <string name="sort">Sort</string>
+    <string name="price_low_to_high">Price: low to high</string>
+    <string name="price_high_to_low">Price: high to low</string>
+    <string name="price_from">Price from</string>
+    <string name="to">to</string>
+    <string name="filter">Filter</string>
+    <string name="show">Show</string>
 </resources>
