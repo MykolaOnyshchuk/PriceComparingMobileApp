@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
@@ -41,6 +42,23 @@ class ListActivity : AppCompatActivity() {
             }
         }
 
+        val dbHelperObj = DbHelper()
+        val productList = dbHelperObj.getProductList()
+
+        findViewById<EditText>(R.id.toolbar_search).addTextChangedListener {
+            val searchText = it.toString()
+
+            val list = ArrayList<Product>()
+            for(item in productList){
+                if(item.modelName.contains(searchText)){
+                    list.add(item)
+                }
+            }
+
+            val adapter = ProductAdapter(this, list)
+            listView.adapter = adapter
+        }
+
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.nav_phones_and_smartphones -> Toast.makeText(applicationContext, "Clicked Phones and smartphones", Toast.LENGTH_SHORT).show()
@@ -62,8 +80,7 @@ class ListActivity : AppCompatActivity() {
 
 
 
-        val dbHelperObj = DbHelper()
-        val productList = dbHelperObj.getProductList()
+
 
 
         //val listItems = arrayOfNulls<String>(products.size)

@@ -1,4 +1,7 @@
 package com.example.pricecompare
 
-class Price(shop: String, url: String, price: Int) {
-}
+data class Price(
+    val shop: String,
+    val url: String,
+    val price: Int
+)
