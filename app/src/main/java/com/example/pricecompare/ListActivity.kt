@@ -4,9 +4,14 @@ import android.content.ClipData.newIntent
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.AppCompatImageButton
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
@@ -18,7 +23,6 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
-
         listView = findViewById<ListView>(R.id.recipe_list_view)
         val drawerLayout : DrawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
@@ -29,7 +33,13 @@ class ListActivity : AppCompatActivity() {
 
         toggle.syncState()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        findViewById<AppCompatImageButton>(R.id.toolbar_menu).setOnClickListener {
+            if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }else{
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
+        }
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
