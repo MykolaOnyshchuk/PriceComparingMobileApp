@@ -80,6 +80,7 @@ object FeedReaderContract {
         //const val COLUMN_ID = "id"
         const val COLUMN_PRODUCT_ID = "deviceId"
         const val COLUMN_SHOP_ID = "shopId"
+        const val COLUMN_SHOP_URL = "shopUrl"
         const val COLUMN_PRICE = "price"
     }
 }
@@ -114,7 +115,7 @@ private const val SQL_SPECS_CREATE_ENTRIES =
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_FRONT_CAMERA} TEXT, " +
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_RESOLUTION} TEXT, " +
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_SIZE} TEXT, " +
-            "${FeedReaderContract.FeedSpecsEntry.COLUMN_PROCESSOR} TEXT" +
+            "${FeedReaderContract.FeedSpecsEntry.COLUMN_PROCESSOR} TEXT," +
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_INTERNAL_MEMORY} TEXT, " +
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_RAM} TEXT, " +
             "${FeedReaderContract.FeedSpecsEntry.COLUMN_BATTERY} TEXT)"
@@ -129,6 +130,7 @@ private const val SQL_PRICES_CREATE_ENTRIES =
             "${BaseColumns._ID} INTEGER PRIMARY KEY," +
             "${FeedReaderContract.FeedPricesEntry.COLUMN_PRODUCT_ID} TEXT, " +
             "${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID} INTEGER, " +
+            "${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_URL} TEXT, " +
             "${FeedReaderContract.FeedPricesEntry.COLUMN_PRICE} INTEGER, " +
             "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_PRODUCT_ID}) REFERENCES ${FeedReaderContract.FeedProductEntry.TABLE_NAME}(${FeedReaderContract.FeedProductEntry.COLUMN_ID}), " +
             "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID}) REFERENCES ${FeedReaderContract.FeedShopsEntry.TABLE_NAME}(${BaseColumns._ID}))" /////////////////

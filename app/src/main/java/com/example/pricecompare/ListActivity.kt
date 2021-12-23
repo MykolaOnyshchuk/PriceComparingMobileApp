@@ -55,36 +55,6 @@ class ListActivity : AppCompatActivity() {
         val dbHelperObj = DbHelper()
         val productList = dbHelperObj.getProductList()
 
-        productList[0].modelName = "Infinix V15"
-        productList[0].lowestPrice = 9699
-        productList[1].modelName = "Infinix Smart 5"
-        productList[1].lowestPrice = 7199
-        productList[2].modelName = "Infinix 10s"
-        productList[2].lowestPrice = 8499
-        productList[3].modelName = "Realme C21Y"
-        productList[3].lowestPrice = 8999
-        productList[4].modelName = "Xiaomi Redmi 9i"
-        productList[4].lowestPrice = 8499
-        productList[5].modelName = "Xiaomi Poco C31"
-        productList[5].lowestPrice = 8499
-        productList[6].modelName = "Infinix Hot 10 Play"
-        productList[6].lowestPrice = 9099
-
-//
-//        productList[6].modelName = "Apple Iphone 13 Pro"
-//        productList[6].lowestPrice = 169990
-//        productList[1].modelName = "Apple Iphone 12 Pro"
-//        productList[1].lowestPrice = 139000
-//        productList[4].modelName = "Apple Iphone 12 Pro Max"
-//        productList[4].lowestPrice = 159900
-//        productList[2].modelName = "Samsung Galaxy Z Fold3"
-//        productList[2].lowestPrice = 157999
-//        productList[3].modelName = "Samsung Galaxy Z Fold2"
-//        productList[3].lowestPrice = 157999
-//        productList[5].modelName = "Apple Iphone XS"
-//        productList[5].lowestPrice = 134900
-//        productList[0].modelName = "Samsung Galaxy S9 Plus"
-//        productList[0].lowestPrice = 117990
 
         //val listItems = arrayOfNulls<String>(products.size)
 //        for (i in 0 until recipeList.size) {
@@ -95,11 +65,15 @@ class ListActivity : AppCompatActivity() {
         val adapter = ProductAdapter(this, productList)
         listView.adapter = adapter
 
-        val context = this
+        val context = MyApplication.getAppContext()
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedProduct = productList[position]
 
             //val detailIntent = ProductDetailsActivity.newIntent(context, selectedRecipe)
+
+            val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
+            var dbHelper = DbHelper()
+            //dbHelper.loadBrandsAndSpecs(1, apiKey, selectedProduct.id)
             val intent = Intent(context, ProductDetailsActivity::class.java)
             intent.putExtra("productObj", selectedProduct.id)
             startActivity(intent)

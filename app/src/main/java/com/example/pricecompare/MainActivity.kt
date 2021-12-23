@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         val drawerLayout : DrawerLayout = findViewById(R.id.drawerLayout)
         val navView : NavigationView = findViewById(R.id.nav_view)
-        val button : Button = findViewById(R.id.button)
+        button = findViewById(R.id.button)
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         // ...
 
         // Instantiate the RequestQueue.
-        val queue = Volley.newRequestQueue(this)
         val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
         //val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY&page=1"
 
@@ -101,216 +100,215 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        fun loadBrandsAndSpecs(page: Int) {
-            val dbHelper = FeedReaderDbHelper(this)
-            val dbR = dbHelper.readableDatabase
-
-
-            val projection = arrayOf(FeedReaderContract.FeedProductEntry.COLUMN_ID)
-
-            //val selection = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} = ?"
-            //val selectionArgs = arrayOf("Cars")
-
-            //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
-
-            val cursor = dbR.query(
-                FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
-                projection,             // The array of columns to return (pass null to get all)
-                null,              // The columns for the WHERE clause
-                null,          // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                null               // The sort order
-            )
-
-            val itemIds = mutableListOf<String>()
-            //val catNames = mutableListOf<String>()
-            with(cursor) {
-                while (moveToNext()) {
-                    val itemId = getString(cursor.getColumnIndexOrThrow("id"))
-                    textView.append(itemId)
-                    //val categoryName = getString(cursor.getColumnIndexOrThrow("modelName"))
-                    itemIds.add(itemId)
-                    //catNames.add(categoryName)
-                }
-            }
-            cursor.close()
-            dbR.close()
-            dbHelper.close()
-
-            if (itemIds.isEmpty()) {
-                //textView.text = "Empty"
-            }
-            for (i in 0 until itemIds.size) {
-                val url = "https://price-api.datayuge.com/api/v1/compare/detail?api_key=${apiKey}&id=${itemIds[i]}"
-                textView.append(itemIds[i])
-                var queueEl = StringRequest(
-                    Request.Method.GET, url,
-                    { response ->
-                        val jsonObj = JSONObject(response).getJSONObject("data")
-                        val brand = jsonObj.getString("product_brand")
-                        val rating = jsonObj.getString("product_ratings")
-                        val dbHelper = FeedReaderDbHelper(this)
-                        val dbR = dbHelper.readableDatabase
-
-
-                        val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME)
-
-                        val selection = "${FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME} = ?"
-                        val selectionArgs = arrayOf(brand)
-
-                        //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
-
-                        val cursor = dbR.query(
-                            FeedReaderContract.FeedBrandEntry.TABLE_NAME,   // The table to query
-                            projection,             // The array of columns to return (pass null to get all)
-                            selection,              // The columns for the WHERE clause
-                            selectionArgs,          // The values for the WHERE clause
-                            null,                   // don't group the rows
-                            null,                   // don't filter by row groups
-                            null               // The sort order
-                        )
-
-                        val productBrands = mutableListOf<String>()
-                        //val catNames = mutableListOf<String>()
-                        with(cursor) {
-                            while (moveToNext()) {
-                                val productBrand = getString(cursor.getColumnIndexOrThrow("name"))
-                                //val categoryName = getString(cursor.getColumnIndexOrThrow("name"))
-                                productBrands.add(productBrand)
-                                //catNames.add(categoryName)
-                            }
-                        }
-                        cursor.close()
-                        dbR.close()
-
-//////////////////////////////////////////////////////////////////////
-                        val dbLocal = dbHelper.writableDatabase
-                        var found = false
-                        var index = 1
-                        for (j in 0 until productBrands.size) {
-                            index = j + 1
-                            if (brand == productBrands[0]) {
-                                found = true
-                                break
-                            }
-                        }
-                        if (!found)
-                        {
-
-                            val values = ContentValues().apply {
-                                put(FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME, brand)
-                            }
-                            val newRowId = dbLocal?.insert(FeedReaderContract.FeedBrandEntry.TABLE_NAME, null, values)
-
-                        }
-                        val values1 = ContentValues().apply {
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_BRAND_ID, index)
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_RATING, rating)
-                        }
-
-                        val idSelection = "${FeedReaderContract.FeedProductEntry.COLUMN_ID} LIKE ?"
-                        val idSelectionArgs = arrayOf(itemIds[i])
-                        val count = dbLocal.update(
-                            FeedReaderContract.FeedProductEntry.TABLE_NAME,
-                            values1,
-                            idSelection,
-                            idSelectionArgs)
-
-                        dbLocal.close()
-                        dbHelper.close()
-                    },
-                    Response.ErrorListener { jsonString = "That didn't work!" })
-                queue.add(queueEl)
-
-                val specsUrl = "https://price-api.datayuge.com/api/v1/compare/specs?api_key=${apiKey}&id=${itemIds[i]}"
-                var specsQueueEl = StringRequest(
-                    Request.Method.GET, specsUrl,
-                    { response ->
-                        val product = JSONObject(response).getJSONObject("data")
-                        val dbHelper = FeedReaderDbHelper(this)
-                        val dbLocal = dbHelper.writableDatabase
-
-
-                        val mainSpecsArr = product.getJSONArray("main_specs")
-                        val mainSpecs = mainSpecsArr.getString(0) + ", " + mainSpecsArr.getString(1) + ", " + mainSpecsArr.getString(2) + ", " + mainSpecsArr.getString(3) + ", " + mainSpecsArr.getString(4)
-                        val subSpecsObj = product.getJSONObject("sub_specs")
-                        val camera = subSpecsObj.getJSONArray("Camera")
-                        var rearCamera : String = ""
-                        var frontCamera : String = ""
-                        for (j in 0 until camera.length()) {
-                            if (camera.getJSONObject(j).getString("spec_key") == "Rear") {
-                                rearCamera = camera.getJSONObject(j).getString("spec_value")
-                            } else if (camera.getJSONObject(j).getString("spec_key") == "Front") {
-                                frontCamera = camera.getJSONObject(j).getString("spec_value")
-                            }
-                        }
-                        val battery = subSpecsObj.getJSONArray("Battery")
-                        var batteryCapacity : String = ""
-                        for (j in 0 until battery.length()) {
-                            if (battery.getJSONObject(j).getString("spec_key") == "Capacity") {
-                                batteryCapacity = battery.getJSONObject(j).getString("spec_value")
-                            }
-                        }
-                        val display = subSpecsObj.getJSONArray("Display")
-                        var displayResolution : String = ""
-                        var displaySize : String = ""
-                        for (j in 0 until display.length()) {
-                            if (display.getJSONObject(j).getString("spec_key") == "Resolution") {
-                                displayResolution = display.getJSONObject(j).getString("spec_value")
-                            } else if (display.getJSONObject(j).getString("spec_key") == "Size") {
-                                displaySize = display.getJSONObject(j).getString("spec_value")
-                            }
-                        }
-
-                        val storage = subSpecsObj.getJSONArray("Storage")
-                        var internalMemory : String = ""
-                        var ram : String = ""
-                        for (j in 0 until storage.length()) {
-                            if (storage.getJSONObject(j).getString("spec_key") == "Internal Memory") {
-                                internalMemory = storage.getJSONObject(j).getString("spec_value")
-                            } else if (storage.getJSONObject(j).getString("spec_key") == "RAM") {
-                                ram = storage.getJSONObject(j).getString("spec_value")
-                            }
-                        }
-                        val processor = subSpecsObj.getJSONArray("Processor")
-                        var chipset : String = ""
-                        for (j in 0 until processor.length()) {
-                            if (processor.getJSONObject(j).getString("spec_key") == "Chipset") {
-                                chipset = processor.getJSONObject(j).getString("spec_value")
-                            }
-                        }
-                        val values = ContentValues().apply {
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_ID, itemIds[i])
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_MAIN_SPECS, mainSpecs)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_REAR_CAMERA, rearCamera)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_FRONT_CAMERA, frontCamera)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_RESOLUTION, displayResolution)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_SIZE, displaySize)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_PROCESSOR, chipset)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_INTERNAL_MEMORY, internalMemory)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_RAM, ram)
-                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_BATTERY, batteryCapacity)
-                        }
-
-                        val newRowId = dbLocal?.insert(FeedReaderContract.FeedSpecsEntry.TABLE_NAME, null, values)
-                        dbLocal.close()
-                        dbHelper.close()
-                        //textView.text = obj.getJSONArray("data").getJSONObject(0).getString("product_title")
-//                    jsonStringOfModels.plus(response)
-                    },
-                    Response.ErrorListener { jsonString = "That didn't work!" })
-                queue.add(specsQueueEl)
-            }
-
-
-
-        }
+//        fun loadBrandsAndSpecs(page: Int, apiKey: String) {
+//            val queue = Volley.newRequestQueue(MyApplication.getAppContext())
+//            val dbHelper = FeedReaderDbHelper(this)
+//            val dbR = dbHelper.readableDatabase
+//
+//
+//            val projection = arrayOf(FeedReaderContract.FeedProductEntry.COLUMN_ID)
+//
+//            //val selection = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} = ?"
+//            //val selectionArgs = arrayOf("Cars")
+//
+//            //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
+//
+//            val cursor = dbR.query(
+//                FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
+//                projection,             // The array of columns to return (pass null to get all)
+//                null,              // The columns for the WHERE clause
+//                null,          // The values for the WHERE clause
+//                null,                   // don't group the rows
+//                null,                   // don't filter by row groups
+//                null               // The sort order
+//            )
+//
+//            val itemIds = mutableListOf<String>()
+//            //val catNames = mutableListOf<String>()
+//            with(cursor) {
+//                while (moveToNext()) {
+//                    val itemId = getString(cursor.getColumnIndexOrThrow("id"))
+//                    textView.append(itemId)
+//                    //val categoryName = getString(cursor.getColumnIndexOrThrow("modelName"))
+//                    itemIds.add(itemId)
+//                    //catNames.add(categoryName)
+//                }
+//            }
+//            cursor.close()
+//            dbR.close()
+//            dbHelper.close()
+//
+//            if (itemIds.isEmpty()) {
+//                //textView.text = "Empty"
+//            }
+//            for (i in 0 until itemIds.size) {
+//                val url = "https://price-api.datayuge.com/api/v1/compare/detail?api_key=${apiKey}&id=${itemIds[i]}"
+//                textView.append(itemIds[i])
+//                var queueEl = StringRequest(
+//                    Request.Method.GET, url,
+//                    { response ->
+//                        val jsonObj = JSONObject(response).getJSONObject("data")
+//                        val brand = jsonObj.getString("product_brand")
+//                        val rating = jsonObj.getString("product_ratings")
+//                        val dbHelper = FeedReaderDbHelper(this)
+//                        val dbR = dbHelper.readableDatabase
+//
+//
+//                        val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME)
+//
+//                        val selection = "${FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME} = ?"
+//                        val selectionArgs = arrayOf(brand)
+//
+//                        //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
+//
+//                        val cursor = dbR.query(
+//                            FeedReaderContract.FeedBrandEntry.TABLE_NAME,   // The table to query
+//                            projection,             // The array of columns to return (pass null to get all)
+//                            selection,              // The columns for the WHERE clause
+//                            selectionArgs,          // The values for the WHERE clause
+//                            null,                   // don't group the rows
+//                            null,                   // don't filter by row groups
+//                            null               // The sort order
+//                        )
+//
+//                        val productBrands = mutableListOf<String>()
+//                        //val catNames = mutableListOf<String>()
+//                        with(cursor) {
+//                            while (moveToNext()) {
+//                                val productBrand = getString(cursor.getColumnIndexOrThrow("name"))
+//                                //val categoryName = getString(cursor.getColumnIndexOrThrow("name"))
+//                                productBrands.add(productBrand)
+//                                //catNames.add(categoryName)
+//                            }
+//                        }
+//                        cursor.close()
+//                        dbR.close()
+//
+//                        val dbLocal = dbHelper.writableDatabase
+//                        var found = false
+//                        var index = 1
+//                        for (j in 0 until productBrands.size) {
+//                            index = j + 1
+//                            if (brand == productBrands[0]) {
+//                                found = true
+//                                break
+//                            }
+//                        }
+//                        if (!found)
+//                        {
+//
+//                            val values = ContentValues().apply {
+//                                put(FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME, brand)
+//                            }
+//                            val newRowId = dbLocal?.insert(FeedReaderContract.FeedBrandEntry.TABLE_NAME, null, values)
+//
+//                        }
+//                        val values1 = ContentValues().apply {
+//                            put(FeedReaderContract.FeedProductEntry.COLUMN_BRAND_ID, index)
+//                            put(FeedReaderContract.FeedProductEntry.COLUMN_RATING, rating)
+//                        }
+//
+//                        val idSelection = "${FeedReaderContract.FeedProductEntry.COLUMN_ID} LIKE ?"
+//                        val idSelectionArgs = arrayOf(itemIds[i])
+//                        val count = dbLocal.update(
+//                            FeedReaderContract.FeedProductEntry.TABLE_NAME,
+//                            values1,
+//                            idSelection,
+//                            idSelectionArgs)
+//
+//                        dbLocal.close()
+//                        dbHelper.close()
+//                    },
+//                    Response.ErrorListener { jsonString = "That didn't work!" })
+//                queue.add(queueEl)
+//
+//                val specsUrl = "https://price-api.datayuge.com/api/v1/compare/specs?api_key=${apiKey}&id=${itemIds[i]}"
+//                var specsQueueEl = StringRequest(
+//                    Request.Method.GET, specsUrl,
+//                    { response ->
+//                        val product = JSONObject(response).getJSONObject("data")
+//                        val dbHelper = FeedReaderDbHelper(this)
+//                        val dbLocal = dbHelper.writableDatabase
+//
+//
+//                        val mainSpecsArr = product.getJSONArray("main_specs")
+//                        val mainSpecs = mainSpecsArr.getString(0) + ", " + mainSpecsArr.getString(1) + ", " + mainSpecsArr.getString(2) + ", " + mainSpecsArr.getString(3) + ", " + mainSpecsArr.getString(4)
+//                        val subSpecsObj = product.getJSONObject("sub_specs")
+//                        val camera = subSpecsObj.getJSONArray("Camera")
+//                        var rearCamera : String = ""
+//                        var frontCamera : String = ""
+//                        for (j in 0 until camera.length()) {
+//                            if (camera.getJSONObject(j).getString("spec_key") == "Rear") {
+//                                rearCamera = camera.getJSONObject(j).getString("spec_value")
+//                            } else if (camera.getJSONObject(j).getString("spec_key") == "Front") {
+//                                frontCamera = camera.getJSONObject(j).getString("spec_value")
+//                            }
+//                        }
+//                        val battery = subSpecsObj.getJSONArray("Battery")
+//                        var batteryCapacity : String = ""
+//                        for (j in 0 until battery.length()) {
+//                            if (battery.getJSONObject(j).getString("spec_key") == "Capacity") {
+//                                batteryCapacity = battery.getJSONObject(j).getString("spec_value")
+//                            }
+//                        }
+//                        val display = subSpecsObj.getJSONArray("Display")
+//                        var displayResolution : String = ""
+//                        var displaySize : String = ""
+//                        for (j in 0 until display.length()) {
+//                            if (display.getJSONObject(j).getString("spec_key") == "Resolution") {
+//                                displayResolution = display.getJSONObject(j).getString("spec_value")
+//                            } else if (display.getJSONObject(j).getString("spec_key") == "Size") {
+//                                displaySize = display.getJSONObject(j).getString("spec_value")
+//                            }
+//                        }
+//
+//                        val storage = subSpecsObj.getJSONArray("Storage")
+//                        var internalMemory : String = ""
+//                        var ram : String = ""
+//                        for (j in 0 until storage.length()) {
+//                            if (storage.getJSONObject(j).getString("spec_key") == "Internal Memory") {
+//                                internalMemory = storage.getJSONObject(j).getString("spec_value")
+//                            } else if (storage.getJSONObject(j).getString("spec_key") == "RAM") {
+//                                ram = storage.getJSONObject(j).getString("spec_value")
+//                            }
+//                        }
+//                        val processor = subSpecsObj.getJSONArray("Processor")
+//                        var chipset : String = ""
+//                        for (j in 0 until processor.length()) {
+//                            if (processor.getJSONObject(j).getString("spec_key") == "Chipset") {
+//                                chipset = processor.getJSONObject(j).getString("spec_value")
+//                            }
+//                        }
+//                        val values = ContentValues().apply {
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_ID, itemIds[i])
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_MAIN_SPECS, mainSpecs)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_REAR_CAMERA, rearCamera)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_FRONT_CAMERA, frontCamera)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_RESOLUTION, displayResolution)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_SCREEN_SIZE, displaySize)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_PROCESSOR, chipset)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_INTERNAL_MEMORY, internalMemory)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_RAM, ram)
+//                            put(FeedReaderContract.FeedSpecsEntry.COLUMN_BATTERY, batteryCapacity)
+//                        }
+//
+//                        val newRowId = dbLocal?.insert(FeedReaderContract.FeedSpecsEntry.TABLE_NAME, null, values)
+//                        dbLocal.close()
+//                        dbHelper.close()
+//                        //textView.text = obj.getJSONArray("data").getJSONObject(0).getString("product_title")
+////                    jsonStringOfModels.plus(response)
+//                    },
+//                    Response.ErrorListener { jsonString = "That didn't work!" })
+//                queue.add(specsQueueEl)
+//            }
+//
+//        }
 
 
 
 
-        fun loadProductList(page: Int) {
+        fun loadProductList(page: Int, apiKey: String) {
+            val queue = Volley.newRequestQueue(MyApplication.getAppContext())
             val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=${apiKey}&page=${page}"
             var queueEl = StringRequest(
                 Request.Method.GET, url,
@@ -340,7 +338,7 @@ class MainActivity : AppCompatActivity() {
                     dbLocal.close()
                     dbHelper.close()
 
-                    loadBrandsAndSpecs(1)
+                    //loadBrandsAndSpecs(1, apiKey)
 
                     //textView.text = obj.getJSONArray("data").getJSONObject(0).getString("product_title")
 //                    jsonStringOfModels.plus(response)
@@ -353,7 +351,7 @@ class MainActivity : AppCompatActivity() {
             queue.add(queueEl)
         }
 
-        loadProductList(1)
+        loadProductList(1, apiKey)
 
         button.setOnClickListener {
             val intent = Intent(this, ListActivity::class.java)

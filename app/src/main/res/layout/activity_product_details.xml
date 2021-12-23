@@ -16,7 +16,7 @@
         android:layout_marginTop="250dp"
         android:layout_marginEnd="137dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Realme 8i"
+        android:text=""
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
         android:layout_marginStart="170dp"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text="8999"
+        android:text=""
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
         android:layout_marginStart="180dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal|center_vertical"
-        android:text="4.3"
+        android:text=""
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,18 +119,20 @@
     <TextView
         android:id="@+id/mainSpecifications"
         android:layout_width="415dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:background="#8CAFDA"
         android:gravity="start|center_vertical"
         android:paddingStart="30dp"
-        android:text='Main specifications:   6.6  inch Screen","4 GB RAM","64 GB ROM","Other OS","Dual SIM"'
+        android:paddingEnd="30dp"
+        android:text="Main specifications:   "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
 
     <TableRow
+        android:id="@+id/rCamera"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,8 +141,8 @@
         <TextView
             android:id="@+id/rearCamera"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -148,35 +150,36 @@
             android:text="@string/rear_camera"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/mainSpecifications" />
 
         <TextView
             android:id="@+id/rearCameraSpecs"
             android:layout_width="259dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="Triple (50 MP, f1.8, Wide Angle Camera + 2 MP, f2.4 Camera"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/mainSpecifications" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/fCamera"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/rCamera">
 
         <TextView
             android:id="@+id/frontCamera"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -184,35 +187,36 @@
             android:text="@string/front_camera"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/rCamera" />
 
         <TextView
             android:id="@+id/frontCameraSpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="Single (16 MP, f2.05, Wide Angle Camera(3 sensor size, 1pixel size))"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/rCamera" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/screenRes"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/fCamera">
 
         <TextView
             android:id="@+id/screenResolution"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -220,35 +224,36 @@
             android:text="@string/screen_resolution"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/fCamera" />
 
         <TextView
             android:id="@+id/screenResolutionSpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="1080 x 2412 pixels"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/fCamera" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/screenS"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="186dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/screenRes">
 
         <TextView
             android:id="@+id/screenSize"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -256,35 +261,36 @@
             android:text="@string/screen_size"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/screenRes" />
 
         <TextView
             android:id="@+id/screenSizeSpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="6.6 inches (16.76 cms)"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/screenRes" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/proc"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="247dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/screenS">
 
         <TextView
             android:id="@+id/processor"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -292,35 +298,36 @@
             android:text="@string/processor"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/screenS" />
 
         <TextView
             android:id="@+id/processorSpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="MediaTek Helio G96"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/screenS" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/inMemory"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="307dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/proc">
 
         <TextView
             android:id="@+id/internalMemory"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -328,35 +335,36 @@
             android:text="@string/internal_memory"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/proc" />
 
         <TextView
             android:id="@+id/internalMemorySpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="64 GB"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/proc" />
     </TableRow>
 
     <TableRow
+        android:id="@+id/RAM"
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="367dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/inMemory">
 
         <TextView
             android:id="@+id/ram"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -364,35 +372,35 @@
             android:text="@string/ram"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/inMemory" />
 
         <TextView
             android:id="@+id/ramSpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="4 GB"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/inMemory" />
     </TableRow>
 
     <TableRow
         android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="427dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainSpecifications">
+        app:layout_constraintTop_toBottomOf="@+id/RAM">
 
         <TextView
             android:id="@+id/battery"
             android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
@@ -400,20 +408,20 @@
             android:text="@string/battery"
             android:textColor="#263238"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/RAM" />
 
         <TextView
             android:id="@+id/batterySpecs"
             android:layout_width="260dp"
-            android:layout_height="58dp"
-            android:layout_marginTop="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:background="#8CAFDA"
             android:gravity="start|center_vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:text="5000 mAh"
+            android:text=""
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/specificationsText" />
+            app:layout_constraintTop_toBottomOf="@+id/RAM" />
     </TableRow>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 
 
 class ProductAdapter(private val context: Context,
-                    private val dataSource: ArrayList<Product>) : BaseAdapter(), Parcelable {
+                     private val dataSource: ArrayList<Product>) : BaseAdapter(), Parcelable {
 
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
