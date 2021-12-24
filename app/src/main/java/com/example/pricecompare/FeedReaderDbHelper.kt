@@ -17,7 +17,12 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_ENTRIES)
+        db.execSQL(SQL_CATEGORY_DELETE_ENTRIES)
+        db.execSQL(SQL_BRAND_DELETE_ENTRIES)
+        db.execSQL(SQL_PRODUCT_DELETE_ENTRIES)
+        db.execSQL(SQL_SPECS_DELETE_ENTRIES)
+        db.execSQL(SQL_SHOPS_DELETE_ENTRIES)
+        db.execSQL(SQL_PRICES_DELETE_ENTRIES)
         onCreate(db)
     }
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -136,4 +141,9 @@ private const val SQL_PRICES_CREATE_ENTRIES =
             "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID}) REFERENCES ${FeedReaderContract.FeedShopsEntry.TABLE_NAME}(${BaseColumns._ID}))" /////////////////
 
 
-private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_CATEGORY_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_BRAND_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_PRODUCT_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_SPECS_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_SHOPS_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"
+private const val SQL_PRICES_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"

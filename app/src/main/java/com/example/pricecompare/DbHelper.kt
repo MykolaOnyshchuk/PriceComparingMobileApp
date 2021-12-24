@@ -138,7 +138,7 @@ class DbHelper {
 
                 val shopCursor = dbRead.query(
                     FeedReaderContract.FeedShopsEntry.TABLE_NAME,   // The table to query
-                    shopProjection,             // The array of columns to return (pass null to get all)
+                    null,             // The array of columns to return (pass null to get all)
                     null,              // The columns for the WHERE clause
                     null,          // The values for the WHERE clause
                     null,                   // don't group the rows
@@ -149,7 +149,7 @@ class DbHelper {
                 val shopsList = ArrayList<String>()
                 with(shopCursor) {
                     while (moveToNext()) {
-                        val shop = getString(cursor.getColumnIndexOrThrow("name"))
+                        val shop = getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedShopsEntry.COLUMN_SHOP_NAME))
                         shopsList.add(shop)
                     }
                 }
@@ -305,6 +305,7 @@ class DbHelper {
                     put(FeedReaderContract.FeedSpecsEntry.COLUMN_RAM, ram)
                     put(FeedReaderContract.FeedSpecsEntry.COLUMN_BATTERY, batteryCapacity)
                 }
+
 
                 val newRowId = dbLocal?.insert(FeedReaderContract.FeedSpecsEntry.TABLE_NAME, null, values)
                 dbLocal.close()

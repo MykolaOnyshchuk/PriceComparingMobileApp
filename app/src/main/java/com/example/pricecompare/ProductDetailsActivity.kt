@@ -5,12 +5,10 @@ import android.graphics.Color
 import android.icu.number.FractionPrecision
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.util.Linkify
 import android.util.Log
 import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.TableRow
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
@@ -31,6 +29,8 @@ class ProductDetailsActivity : AppCompatActivity() {
     lateinit var internalMemorySpecs: TextView
     lateinit var ramSpecs: TextView
     lateinit var batterySpecs: TextView
+
+    lateinit var priceComparingList: List<Price>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +54,18 @@ class ProductDetailsActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+        findViewById<RadioGroup>(R.id.radio_group).setOnCheckedChangeListener {
+                _, i ->
+            if(i==R.id.radio_a_z){
+                buildComparingList(0)
+            }else if(i==R.id.radio_z_a){
+                buildComparingList(1)
+            }else if(i==R.id.radio_high_low){
+                buildComparingList(2)
+            }else if(i==R.id.radio_low_high){
+                buildComparingList(3)
+            }
+        }
         productName = findViewById(R.id.productName)
         productPriceText = findViewById(R.id.productPriceText)
         productRatingText = findViewById(R.id.productRatingText)
@@ -87,42 +99,64 @@ class ProductDetailsActivity : AppCompatActivity() {
             ramSpecs.text = detailedProduct.ram
             batterySpecs.text = detailedProduct.battery
 
-            for(item in dbHelperObj.getPrices(productId)){
-                val tableRow = TableRow(this)
 
-                val shop = TextView(this)
-                shop.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
-                shop.text = item.shop
-                shop.setTextColor(Color.BLACK)
-                shop.gravity = Gravity.CENTER
-                tableRow.addView(shop)
+            priceComparingList = dbHelperObj.getPrices(productId)
+            buildComparingList(0)
+        }
+    }
 
-                val url = TextView(this)
-                val urlParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
-                url.text = item.url
-                url.setTextColor(Color.DKGRAY)
-                urlParams.weight = 1f
-                url.layoutParams = urlParams
+    private fun buildComparingList(sortType: Int){
+        findViewById<LinearLayout>(R.id.price_list).removeAllViews()
 
-                tableRow.addView(url)
-
-                val price = TextView(this)
-                price.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
-                price.text = item.price.toString()
-                price.setTextColor(Color.BLACK)
-                price.gravity = Gravity.CENTER
-                tableRow.addView(price)
-
-                findViewById<LinearLayout>(R.id.price_comparing_layout).addView(tableRow)
-
-//                Toast.makeText(applicationContext, item.toString(), Toast.LENGTH_SHORT).show()
+        when (sortType) {
+            0 -> {
+                priceComparingList = priceComparingList.sortedBy { it.shop }
+            }
+            1 -> {
+                priceComparingList = priceComparingList.sortedByDescending { it.shop }
+            }
+            2 -> {
+                priceComparingList = priceComparingList.sortedByDescending { it.price }
+            }
+            else -> {
+                priceComparingList = priceComparingList.sortedBy { it.price }
             }
         }
 
+        for(item in priceComparingList){
+            val tableRow = TableRow(this)
 
+            val shop = TextView(this)
+            shop.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
+            shop.text = item.shop
+            shop.setTextColor(Color.BLACK)
+            shop.gravity = Gravity.CENTER
+            tableRow.addView(shop)
+
+            val url = TextView(this)
+            val urlParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+            url.text = item.url
+            url.setTextColor(Color.DKGRAY)
+            urlParams.weight = 1f
+            url.layoutParams = urlParams
+            url.autoLinkMask = Linkify.WEB_URLS;
+            Linkify.addLinks(url, Linkify.WEB_URLS)
+            url.linksClickable = true
+
+            tableRow.addView(url)
+
+            val price = TextView(this)
+            price.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
+            price.text = item.price.toString()
+            price.setTextColor(Color.BLACK)
+            price.gravity = Gravity.CENTER
+            tableRow.addView(price)
+
+            findViewById<LinearLayout>(R.id.price_list).addView(tableRow)
+        }
     }
 
-    fun pxFromDp(dp: Int): Int {
+    private fun pxFromDp(dp: Int): Int {
         return dp * applicationContext.resources.displayMetrics.density.toInt()
     }
 }

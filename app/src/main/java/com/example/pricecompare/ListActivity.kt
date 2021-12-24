@@ -1,22 +1,33 @@
 package com.example.pricecompare
 
-import android.content.ClipData.newIntent
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.MenuItemCompat.getActionView
+import androidx.core.view.get
 import androidx.core.widget.addTextChangedListener
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import kotlin.math.max
+
 
 class ListActivity : AppCompatActivity() {
+    var sort = false
+    val filterA = false
+    var filterB = false
+    var search = false
+    var sortV = 0
+    val filterAV = 0
+    var filterBV = 0
+    var searchV = ""
+    val dbHelperObj = DbHelper()
+    val productList = dbHelperObj.getProductList()
+
     private lateinit var listView: ListView
     lateinit var toggle: ActionBarDrawerToggle
 
@@ -42,22 +53,101 @@ class ListActivity : AppCompatActivity() {
             }
         }
 
-        val dbHelperObj = DbHelper()
-        val productList = dbHelperObj.getProductList()
+//        val container = findViewById<View>(R.id.sortingLayout) as ConstraintLayout
+//
+//        val view = inflate(this, R.layout.activity_list, container)
+
+
+//        View.inflate(applicationContext, R.layout.activity_list, false)
+//            .findViewById<Button>(R.id.button2)
+//            .setOnClickListener {
+//                Toast.makeText(applicationContext, "asd", Toast.LENGTH_SHORT).show()
+//            }
+
+        var sortedA_Z = true
+        var minimum = 0
+        var maximum = 9999999
+
+        findViewById<NavigationView>(R.id.nav_view)
+            .menu[2]
+            .subMenu[0]
+            .actionView
+            .findViewById<RadioGroup>(R.id.rGroup).setOnCheckedChangeListener {
+                    _, i ->
+                sortedA_Z = (i == R.id.radioButton)
+            }
+
+        val filterLayout = findViewById<NavigationView>(R.id.nav_view)
+            .menu[3]
+            .subMenu[0]
+            .actionView
+
+
+        filterLayout.findViewById<Button>(R.id.button2).setOnClickListener {
+            //minimum
+            val minimumString =
+                filterLayout.findViewById<EditText>(R.id.plain_text_input).text.toString()
+            minimum = if(minimumString.isEmpty())
+                0
+            else
+                minimumString.toInt()
+            // maximum
+            val maximumString =
+                filterLayout.findViewById<EditText>(R.id.plain_text_input2).text.toString()
+
+            maximum = if(maximumString.isEmpty())
+                9999999
+            else
+                maximumString.toInt()
+
+            //filter
+            var list = productList.filter { it.lowestPrice in minimum..maximum }
+
+            //sorting
+            list = if(sortedA_Z)
+                list.sortedBy { it.lowestPrice }
+            else
+                list.sortedByDescending { it.lowestPrice }
+
+            //adapter
+            val adapter = ProductAdapter(this, list)
+            listView.adapter = adapter
+        }
+
+
+
+
+
+
 
         findViewById<EditText>(R.id.toolbar_search).addTextChangedListener {
             val searchText = it.toString()
 
-            val list = ArrayList<Product>()
+            var list = mutableListOf<Product>()
             for(item in productList){
-                if(item.modelName.contains(searchText)){
+                if(item.modelName.toLowerCase().contains(searchText.toLowerCase())
+                    && item.lowestPrice in minimum..maximum){
                     list.add(item)
                 }
             }
 
+            if(sortedA_Z)
+                list = list.sortedBy { item -> item.lowestPrice }.toMutableList()
+            else
+                list = list.sortedByDescending { item -> item.lowestPrice }.toMutableList()
+
             val adapter = ProductAdapter(this, list)
             listView.adapter = adapter
         }
+
+//        findViewById<RadioGroup>(R.id.rGroup).setOnCheckedChangeListener{
+//                _, i ->
+//            if(i==R.id.radioButton){
+//                buildList(0)
+//            }else if(i==R.id.radioButton2){
+//                buildList(1)
+//            }
+//        }
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
@@ -105,6 +195,46 @@ class ListActivity : AppCompatActivity() {
             intent.putExtra("productObj", selectedProduct.id)
             startActivity(intent)
         }
+
+//        fun rewriteProductList() {
+//            var list = productList
+//            if (search) {
+//                var tempList = list
+//                list.clear()
+//                for(item in tempList){
+//                    if(item.modelName.toLowerCase().contains(searchV.toLowerCase())){
+//                        list.add(item)
+//                    }
+//                }
+//            }
+//
+//            if (filterA) {
+//                var tempList = list
+//                list.clear()
+//                for(item in tempList){
+//                    if(item.lowestPrice > filterAV){
+//                        list.add(item)
+//                    }
+//                }
+//            }
+//            if (filterB) {
+//                var tempList = list
+//                list.clear()
+//                for(item in tempList){
+//                    if(item.lowestPrice < filterBV){
+//                        list.add(item)
+//                    }
+//                }
+//            }
+//            if (sort) {
+//                if (sortV == 0)
+//                {
+//                    list = list.sortedBy { it.lowestPrice }
+//
+//
+//                }
+//            }
+//        }
 
 //        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems)
 //        listView.adapter = adapter
