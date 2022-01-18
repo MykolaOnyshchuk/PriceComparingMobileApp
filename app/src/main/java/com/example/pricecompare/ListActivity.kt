@@ -135,7 +135,6 @@ class ListActivity : AppCompatActivity() {
 
             val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
             var dbHelper = DbHelper()
-            //dbHelper.loadBrandsAndSpecs(1, apiKey, selectedProduct.id)
             val intent = Intent(context, ProductDetailsActivity::class.java)
             intent.putExtra("productObj", selectedProduct.id)
             startActivity(intent)

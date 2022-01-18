@@ -15,8 +15,6 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.execSQL(SQL_PRICES_CREATE_ENTRIES)
     }
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // This database is only a cache for online data, so its upgrade policy is
-        // to simply to discard the data and start over
         db.execSQL(SQL_CATEGORY_DELETE_ENTRIES)
         db.execSQL(SQL_BRAND_DELETE_ENTRIES)
         db.execSQL(SQL_PRODUCT_DELETE_ENTRIES)
@@ -29,17 +27,14 @@ class FeedReaderDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         onUpgrade(db, oldVersion, newVersion)
     }
     companion object {
-        // If you change the database schema, you must increment the database version.
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "products.db"
     }
 }
 
 object FeedReaderContract {
-    // Table contents are grouped together in an anonymous object.
     object FeedCategoryEntry : BaseColumns {
         const val TABLE_NAME = "Category"
-        //const val COLUMN_ID = "id"
         const val COLUMN_CATEGORY_NAME = "name"
     }
 
@@ -56,7 +51,6 @@ object FeedReaderContract {
 
     object FeedBrandEntry : BaseColumns {
         const val TABLE_NAME = "Brand"
-        //const val COLUMN_ID = "id"
         const val COLUMN_BRAND_NAME = "name"
     }
 
@@ -76,13 +70,11 @@ object FeedReaderContract {
 
     object FeedShopsEntry : BaseColumns {
         const val TABLE_NAME = "Shop"
-        //const val COLUMN_ID = "id"
         const val COLUMN_SHOP_NAME = "name"
     }
 
     object FeedPricesEntry : BaseColumns {
         const val TABLE_NAME = "Prices"
-        //const val COLUMN_ID = "id"
         const val COLUMN_PRODUCT_ID = "deviceId"
         const val COLUMN_SHOP_ID = "shopId"
         const val COLUMN_SHOP_URL = "shopUrl"
@@ -138,7 +130,7 @@ private const val SQL_PRICES_CREATE_ENTRIES =
             "${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_URL} TEXT, " +
             "${FeedReaderContract.FeedPricesEntry.COLUMN_PRICE} INTEGER, " +
             "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_PRODUCT_ID}) REFERENCES ${FeedReaderContract.FeedProductEntry.TABLE_NAME}(${FeedReaderContract.FeedProductEntry.COLUMN_ID}), " +
-            "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID}) REFERENCES ${FeedReaderContract.FeedShopsEntry.TABLE_NAME}(${BaseColumns._ID}))" /////////////////
+            "FOREIGN KEY(${FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID}) REFERENCES ${FeedReaderContract.FeedShopsEntry.TABLE_NAME}(${BaseColumns._ID}))"
 
 
 private const val SQL_CATEGORY_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${FeedReaderContract.FeedCategoryEntry.TABLE_NAME}"

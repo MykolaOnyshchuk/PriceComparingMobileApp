@@ -48,8 +48,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         navView.setNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.nav_phones_and_smartphones -> Toast.makeText(applicationContext, "Clicked Phones and smartphones", Toast.LENGTH_SHORT).show()
+            when (it.itemId) {
+                R.id.nav_phones_and_smartphones -> Toast.makeText(
+                    applicationContext,
+                    "Clicked Phones and smartphones",
+                    Toast.LENGTH_SHORT
+                ).show()
                 R.id.nav_mobiles -> {
                     val intent = Intent(this, ListActivity::class.java)
                     startActivity(intent)
@@ -57,8 +61,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
 
         val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
         val lastSync = sharedPreferences.getLong("lastProductListSync", -1)
@@ -72,13 +74,13 @@ class MainActivity : AppCompatActivity() {
 
         val dbR = dbHelper.readableDatabase
         val cursor = dbR.query(
-            FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            null,              // The columns for the WHERE clause
-            null,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedProductEntry.TABLE_NAME,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         val idList = ArrayList<String>()
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         if (idList.isEmpty() || lastSync == -1L || TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastSync) > 60) {
             val dbH = DbHelper()
             for (i in 1..20) {
-                dbH.loadProductList(i, apiKey)
+                dbH.loadProductList(i)
             }
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
             editor.putLong("lastProductListSync", System.currentTimeMillis())

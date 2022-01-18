@@ -2,8 +2,6 @@
     <string name="app_name">PriceCompare</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="mykola_onyshchuk">Mykola Onyshchuk</string>
-    <string name="mykolaon1_gmail_com">mykolaon1@gmail.com</string>
     <string name="home">Home</string>
     <string name="message">Message</string>
     <string name="sync">Sync</string>
@@ -46,4 +44,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">search</string>
     <string name="rupee_symbol">Rupee symbol</string>
+    <string name="low_high">Low-High</string>
+    <string name="high_low">High-Low</string>
+    <string name="z_a">Z-A</string>
+    <string name="a_z">A-Z</string>
+    <string name="instruction1_1">First you need to click</string>
+    <string name="instruction1_3">to open side</string>
+    <string name="instruction1_4">menu where you can choose necessary category and subcategory.</string>
+    <string name="instruction2_1">After choosing the right subcategory it is possible to use search near</string>
+    <string name="instruction2_4">icon or</string>
+    <string name="instruction2_5">use either sorting or filtration by price in the side menu in order to find the necessary product. You can also open product page immediately.</string>
+    <string name="instruction3_1">In the product\'s page you can view product\'s specifications or move to comparison by clicking \'PRICE COMPARING\'.</string>
+    <string name="instruction4_1">In \'PRICE COMPARING\' it is possible to filter price suggestions A to Z or Z to A by alphabet and low to high or high to low by price. You can also click the link and visit product\'s page on specific shop\'s website</string>
 </resources>

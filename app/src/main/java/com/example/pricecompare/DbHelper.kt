@@ -11,7 +11,8 @@ import org.json.JSONObject
 
 class DbHelper {
 
-    fun loadProductList(page: Int, apiKey: String) {
+    fun loadProductList(page: Int) {
+        val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
         val queue = Volley.newRequestQueue(MyApplication.getAppContext())
         val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=${apiKey}&page=${page}"
         var queueEl = StringRequest(
@@ -25,10 +26,8 @@ class DbHelper {
                     put(FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME, "Mobiles")
                 }
 
-                //dbLocal.delete(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, null)
-
                 val categoryRowId = dbLocal?.insert(FeedReaderContract.FeedCategoryEntry.TABLE_NAME, null, categoryValues)
-                for (i in 0 until jsonArr.length()) {//////////////
+                for (i in 0 until jsonArr.length()) {
                     val product = jsonArr.getJSONObject(i)
 
                     val values = ContentValues().apply {
@@ -53,20 +52,17 @@ class DbHelper {
         val dbR = dbHelper.readableDatabase
 
 
-        //val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME)
-
         val cursor = dbR.query(
-            FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            null,              // The columns for the WHERE clause
-            null,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedProductEntry.TABLE_NAME,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         val productList = ArrayList<Product>()
-        //val catNames = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {
                 val product = Product(
@@ -84,11 +80,11 @@ class DbHelper {
         return productList
     }
 
-    fun loadBrandsAndSpecs(page: Int, apiKey: String, itemId: String, onDetailsLoaded: () -> Unit) {
+    fun loadBrandsAndSpecs(itemId: String, onDetailsLoaded: () -> Unit) {
         val queue = Volley.newRequestQueue(MyApplication.getAppContext())
 
+        val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
         val url = "https://price-api.datayuge.com/api/v1/compare/detail?api_key=${apiKey}&id=${itemId}"
-        //textView.append(itemIds[i])
         var finished = false
         var queueEl = StringRequest(
             Request.Method.GET, url,
@@ -96,7 +92,7 @@ class DbHelper {
                 val jsonObj = JSONObject(response).getJSONObject("data")
                 val brand = jsonObj.getString("product_brand")
                 val rating = jsonObj.getString("product_ratings")
-                val storesJsonArr = jsonObj.getJSONArray("stores")////
+                val storesJsonArr = jsonObj.getJSONArray("stores")
                 val dbHelper = FeedReaderDbHelper(MyApplication.getAppContext())
                 val dbR = dbHelper.readableDatabase
 
@@ -106,26 +102,21 @@ class DbHelper {
                 val selection = "${FeedReaderContract.FeedBrandEntry.COLUMN_BRAND_NAME} = ?"
                 val selectionArgs = arrayOf(brand)
 
-                //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
-
                 val cursor = dbR.query(
-                    FeedReaderContract.FeedBrandEntry.TABLE_NAME,   // The table to query
-                    projection,             // The array of columns to return (pass null to get all)
-                    selection,              // The columns for the WHERE clause
-                    selectionArgs,          // The values for the WHERE clause
-                    null,                   // don't group the rows
-                    null,                   // don't filter by row groups
-                    null               // The sort order
+                    FeedReaderContract.FeedBrandEntry.TABLE_NAME,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
                 )
 
                 val productBrands = mutableListOf<String>()
-                //val catNames = mutableListOf<String>()
                 with(cursor) {
                     while (moveToNext()) {
                         val productBrand = getString(cursor.getColumnIndexOrThrow("name"))
-                        //val categoryName = getString(cursor.getColumnIndexOrThrow("name"))
                         productBrands.add(productBrand)
-                        //catNames.add(categoryName)
                     }
                 }
                 cursor.close()
@@ -170,13 +161,13 @@ class DbHelper {
                 val shopProjection = arrayOf(FeedReaderContract.FeedShopsEntry.COLUMN_SHOP_NAME)
 
                 val shopCursor = dbRead.query(
-                    FeedReaderContract.FeedShopsEntry.TABLE_NAME,   // The table to query
-                    null,             // The array of columns to return (pass null to get all)
-                    null,              // The columns for the WHERE clause
-                    null,          // The values for the WHERE clause
-                    null,                   // don't group the rows
-                    null,                   // don't filter by row groups
-                    null               // The sort order
+                    FeedReaderContract.FeedShopsEntry.TABLE_NAME,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 )
 
                 val shopsList = ArrayList<String>()
@@ -248,14 +239,6 @@ class DbHelper {
                     }
                     dbWrite.close()
                 }
-//                for (i in 0 until storesJsonArr.length()) {
-//                    val iteratorObj = storesJsonArr.getJSONObject(i).keys()
-//                    while(iteratorObj.hasNext()) {
-//                        val key = iteratorObj.next()
-//                        val storeObj = storesJsonArr.getJSONObject(i).getJSONObject(key)
-//                    }
-//                    if(storesJsonArr.)
-//                }
 
 
                 dbLocal.close()
@@ -343,8 +326,6 @@ class DbHelper {
                 val newRowId = dbLocal?.insert(FeedReaderContract.FeedSpecsEntry.TABLE_NAME, null, values)
                 dbLocal.close()
                 dbHelper.close()
-                //textView.text = obj.getJSONArray("data").getJSONObject(0).getString("product_title")
-//                    jsonStringOfModels.plus(response)
 
                 if (finished) {
                     onDetailsLoaded()
@@ -363,20 +344,18 @@ class DbHelper {
 
         val selection = "${FeedReaderContract.FeedProductEntry.COLUMN_ID} = ?"
         val selectionArgs = arrayOf(id)
-        //val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME)
 
         val cursor = dbR.query(
-            FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            selection,              // The columns for the WHERE clause
-            selectionArgs,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedProductEntry.TABLE_NAME,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
         )
 
         var productList = ArrayList<Product>()
-        //val catNames = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {
                 val product = Product(
@@ -394,20 +373,18 @@ class DbHelper {
 
         val detailsSelection = "${FeedReaderContract.FeedSpecsEntry.COLUMN_ID} = ?"
         val detailsSelectionArgs = arrayOf(id)
-        //val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME)
 
         val detailsCursor = dbR.query(
-            FeedReaderContract.FeedSpecsEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            detailsSelection,              // The columns for the WHERE clause
-            detailsSelectionArgs,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedSpecsEntry.TABLE_NAME,
+            null,
+            detailsSelection,
+            detailsSelectionArgs,
+            null,
+            null,
+            null
         )
 
         var detailedProductList = ArrayList<ProductHelper>()
-        //val catNames = mutableListOf<String>()
         with(detailsCursor) {
             while (moveToNext()) {
                 var detailedProduct = ProductHelper(
@@ -444,17 +421,16 @@ class DbHelper {
         val projection = arrayOf(FeedReaderContract.FeedShopsEntry.COLUMN_SHOP_NAME)
 
         val cursor = dbR.query(
-            FeedReaderContract.FeedShopsEntry.TABLE_NAME,   // The table to query
-            projection,             // The array of columns to return (pass null to get all)
-            null,              // The columns for the WHERE clause
-            null,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedShopsEntry.TABLE_NAME,
+            projection,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         var shopList = ArrayList<String>()
-        //val catNames = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {
                 val shop = getString(cursor.getColumnIndexOrThrow(FeedReaderContract.FeedShopsEntry.COLUMN_SHOP_NAME))
@@ -467,20 +443,18 @@ class DbHelper {
 
         val selection = "${FeedReaderContract.FeedPricesEntry.COLUMN_PRODUCT_ID} = ?"
         val selectionArgs = arrayOf(id)
-        //val projection = arrayOf(BaseColumns._ID, FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME)
 
         val priceCursor = dbR.query(
-            FeedReaderContract.FeedPricesEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            selection,              // The columns for the WHERE clause
-            selectionArgs,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedPricesEntry.TABLE_NAME,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
         )
 
         var priceList = ArrayList<Price>()
-        //val catNames = mutableListOf<String>()
         with(priceCursor) {
             while (moveToNext()) {
                 val shopId = getInt(priceCursor.getColumnIndexOrThrow(FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID))

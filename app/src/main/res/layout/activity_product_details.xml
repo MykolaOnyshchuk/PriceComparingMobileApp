@@ -141,7 +141,7 @@
                 android:gravity="start|center_vertical"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="Main specifications:   "
+                android:text="@string/main_specifications"
                 android:textColor="@color/black"/>
 
             <TableRow
@@ -428,25 +428,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="A-Z" />
+                    android:text="@string/a_z" />
 
                 <RadioButton
                     android:id="@+id/radio_z_a"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Z-A" />
+                    android:text="@string/z_a" />
 
                 <RadioButton
                     android:id="@+id/radio_high_low"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="High-Low" />
+                    android:text="@string/high_low" />
 
                 <RadioButton
                     android:id="@+id/radio_low_high"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Low-High" />
+                    android:text="@string/low_high" />
             </RadioGroup>
         </TableRow>
 

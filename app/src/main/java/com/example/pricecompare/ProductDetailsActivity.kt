@@ -10,7 +10,6 @@ import android.text.util.Linkify
 import android.view.Gravity
 import android.widget.*
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import com.google.android.material.tabs.TabLayout
 import java.util.concurrent.TimeUnit
 
@@ -101,13 +100,13 @@ class ProductDetailsActivity : AppCompatActivity() {
         val idSelection = "${FeedReaderContract.FeedSpecsEntry.COLUMN_ID} LIKE ?"
         val idSelectionArgs = arrayOf(productId)
         val cursor = dbR.query(
-            FeedReaderContract.FeedSpecsEntry.TABLE_NAME,   // The table to query
-            null,             // The array of columns to return (pass null to get all)
-            null,              // The columns for the WHERE clause
-            null,          // The values for the WHERE clause
-            null,                   // don't group the rows
-            null,                   // don't filter by row groups
-            null               // The sort order
+            FeedReaderContract.FeedSpecsEntry.TABLE_NAME,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         )
 
         val idList = ArrayList<String>()
@@ -124,7 +123,7 @@ class ProductDetailsActivity : AppCompatActivity() {
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
             editor.putLong(productId, System.currentTimeMillis())
             editor.apply()
-            dbH.loadBrandsAndSpecs(1, apiKey, productId) {
+            dbH.loadBrandsAndSpecs(productId) {
                 callback(dbHelperObj, productId)
             }
         } else {
@@ -180,7 +179,6 @@ class ProductDetailsActivity : AppCompatActivity() {
             shop.setTextColor(Color.BLACK)
             shop.setTypeface(null, Typeface.BOLD)
             shop.gravity = Gravity.CENTER
-            //shop.setPadding(0, 30, 0, 20)
             tableRow.addView(shop)
 
             val url = TextView(this)
@@ -203,7 +201,6 @@ class ProductDetailsActivity : AppCompatActivity() {
             price.setTextColor(Color.BLACK)
             price.setTypeface(null, Typeface.BOLD)
             price.gravity = Gravity.CENTER
-            //price.setPadding(0, 30, 0, 20)
             tableRow.addView(price)
 
             findViewById<LinearLayout>(R.id.price_list).addView(tableRow)
