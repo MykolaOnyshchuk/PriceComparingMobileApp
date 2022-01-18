@@ -1,7 +1,8 @@
 package com.example.pricecompare
 
-import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -11,12 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.google.android.material.navigation.NavigationView
-import org.json.JSONObject
+import java.util.concurrent.TimeUnit
 
 const val EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE"
 
@@ -42,9 +39,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        button = findViewById(R.id.button)
-
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
 
@@ -60,105 +54,50 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this, ListActivity::class.java)
                     startActivity(intent)
                 }
-//                R.id.nav_sync -> Toast.makeText(applicationContext, "Clicked Sync", Toast.LENGTH_SHORT).show()
-//                R.id.nav_trash -> Toast.makeText(applicationContext, "Clicked Trash", Toast.LENGTH_SHORT).show()
-//                R.id.nav_setting -> Toast.makeText(applicationContext, "Clicked Settings", Toast.LENGTH_SHORT).show()
-//                R.id.nav_login -> Toast.makeText(applicationContext, "Clicked Log In", Toast.LENGTH_SHORT).show()
-//                R.id.nav_share -> Toast.makeText(applicationContext, "Clicked Share", Toast.LENGTH_SHORT).show()
-//                R.id.nav_rate_us -> Toast.makeText(applicationContext, "Clicked Rate Us", Toast.LENGTH_SHORT).show()
             }
-
             true
-
         }
-        // ...
 
-        // Instantiate the RequestQueue.
         val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
-        //val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY&page=1"
 
-        // Request a string response from the provided URL.
-        /*val stringRequest = StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                // Display the first 500 characters of the response string.
-                textView.text = "Response is: ${response}"
-            },
-            { textView.text = "That didn't work!" })*/
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val lastSync = sharedPreferences.getLong("lastProductListSync", -1)
 
-
-//        fun createGetReq (apiKey: String, page: Int): String {
-//            val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=${apiKey}&page=${page}"
-//            var returnStat = ""
-//            StringRequest(
-//                Request.Method.GET, url,
-//                { response ->
-//                    // Display the first 500 characters of the response string.
-//                    returnStat = response
-//                },
-//                { returnStat = "That didn't work!" })
-//            return returnStat
-//        }
-
-        fun setJsonString(value: String) {
-            this.jsonString = value
+        var dbHelper = FeedReaderDbHelper(this)
+        if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastSync) > 60 && lastSync != -1L) {
+            val dbLocal = dbHelper.writableDatabase
+            dbLocal.delete(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, null)
+            dbLocal.delete(FeedReaderContract.FeedCategoryEntry.TABLE_NAME, null, null)
         }
 
+        val dbR = dbHelper.readableDatabase
+        val cursor = dbR.query(
+            FeedReaderContract.FeedProductEntry.TABLE_NAME,   // The table to query
+            null,             // The array of columns to return (pass null to get all)
+            null,              // The columns for the WHERE clause
+            null,          // The values for the WHERE clause
+            null,                   // don't group the rows
+            null,                   // don't filter by row groups
+            null               // The sort order
+        )
 
-
-
-        fun loadProductList(page: Int, apiKey: String) {
-            val queue = Volley.newRequestQueue(MyApplication.getAppContext())
-            val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=${apiKey}&page=${page}"
-            var queueEl = StringRequest(
-                Request.Method.GET, url,
-                { response ->
-                    val jsonArr = JSONObject(response).getJSONArray("data")
-                    val dbHelper = FeedReaderDbHelper(this)
-                    val dbLocal = dbHelper.writableDatabase
-
-                    val categoryValues = ContentValues().apply {
-                        put(FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME, "Mobiles")
-                    }
-
-                    dbLocal.delete(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, null)
-
-                    val categoryRowId = dbLocal?.insert(FeedReaderContract.FeedCategoryEntry.TABLE_NAME, null, categoryValues)
-                    for (i in 0 until jsonArr.length()) {//////////////
-                        val product = jsonArr.getJSONObject(i)
-
-                        val values = ContentValues().apply {
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_ID, product.getString("product_id"))
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_MODEL_NAME, product.getString("product_title"))
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_LOWEST_PRICE, product.getString("product_lowest_price"))
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_IMAGE_URL, product.getString("product_image"))
-                            put(FeedReaderContract.FeedProductEntry.COLUMN_CATEGORY_ID, 1)
-                        }
-
-                        val newRowId = dbLocal?.insert(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, values)
-                    }
-                    dbLocal.close()
-                    dbHelper.close()
-
-                    //loadBrandsAndSpecs(1, apiKey)
-
-                    //textView.text = obj.getJSONArray("data").getJSONObject(0).getString("product_title")
-//                    jsonStringOfModels.plus(response)
-                },
-                Response.ErrorListener { jsonString = "That didn't work!" })
-
-
-
-            // Add the request to the RequestQueue.
-            queue.add(queueEl)
+        val idList = ArrayList<String>()
+        with(cursor) {
+            while (moveToNext()) {
+                idList.add(getString(cursor.getColumnIndexOrThrow("id")))
+            }
         }
+        cursor.close()
+        dbR.close()
 
-        loadProductList(1, apiKey)
-
-        button.setOnClickListener {
-            val intent = Intent(this, ListActivity::class.java)
-            // start your next activity
-            startActivity(intent)
+        if (idList.isEmpty() || lastSync == -1L || TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastSync) > 60) {
+            val dbH = DbHelper()
+            for (i in 1..20) {
+                dbH.loadProductList(i, apiKey)
+            }
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putLong("lastProductListSync", System.currentTimeMillis())
+            editor.apply()
         }
     }
 

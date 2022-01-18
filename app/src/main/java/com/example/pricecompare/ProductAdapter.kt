@@ -62,10 +62,11 @@ class ProductAdapter(private val context: Context,
 
             // 3
             holder = ViewHolder()
-            holder.thumbnailImageView = view.findViewById(R.id.recipe_list_thumbnail) as ImageView
-            holder.titleTextView = view.findViewById(R.id.recipe_list_title) as TextView
+            holder.thumbnailImageView = view.findViewById(R.id.product_list_thumbnail) as ImageView
+            holder.titleTextView = view.findViewById(R.id.product_list_title) as TextView
             //holder.subtitleTextView = view.findViewById(R.id.recipe_list_subtitle) as TextView
-            holder.detailTextView = view.findViewById(R.id.recipe_list_detail) as TextView
+            holder.detailTextView = view.findViewById(R.id.product_list_detail) as TextView
+            holder.rupeeSymbol = view.findViewById(R.id.product_list_symbol) as ImageView
 
             // 4
             view.tag = holder
@@ -85,6 +86,7 @@ class ProductAdapter(private val context: Context,
         //val subtitleTextView = holder.subtitleTextView
         val detailTextView = holder.detailTextView
         val thumbnailImageView = holder.thumbnailImageView
+        val rupeeSymbol = holder.rupeeSymbol
 
         val recipe = getItem(position) as Product
 
@@ -103,9 +105,9 @@ class ProductAdapter(private val context: Context,
 //        val detailTypeFace = ResourcesCompat.getFont(context, R.font.quicksand_bold)
 //        detailTextView.typeface = detailTypeFace
 
-        detailTextView.setTextColor(
-            //ContextCompat.getColor(context, LABEL_COLORS[recipe.lowestPrice] ?: R.color.colorPrimary))
-            ContextCompat.getColor(context, R.color.black))
+//        detailTextView.setTextColor(
+//            //ContextCompat.getColor(context, LABEL_COLORS[recipe.lowestPrice] ?: R.color.colorPrimary))
+//            ContextCompat.getColor(context, R.color.black))
 
         return view
     }
@@ -115,6 +117,7 @@ class ProductAdapter(private val context: Context,
         //lateinit var subtitleTextView: TextView
         lateinit var detailTextView: TextView
         lateinit var thumbnailImageView: ImageView
+        lateinit var rupeeSymbol: ImageView
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

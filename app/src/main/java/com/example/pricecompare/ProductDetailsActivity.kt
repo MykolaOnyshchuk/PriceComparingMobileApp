@@ -1,18 +1,18 @@
 package com.example.pricecompare
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
-import android.icu.number.FractionPrecision
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.util.Linkify
-import android.util.Log
 import android.view.Gravity
 import android.widget.*
 import androidx.core.view.isVisible
-import com.google.android.material.tabs.TabItem
+import androidx.core.view.marginTop
 import com.google.android.material.tabs.TabLayout
-import org.w3c.dom.Text
+import java.util.concurrent.TimeUnit
 
 
 class ProductDetailsActivity : AppCompatActivity() {
@@ -83,26 +83,74 @@ class ProductDetailsActivity : AppCompatActivity() {
 
         var dbHelperObj = DbHelper()
         val apiKey = "VWDLvFSSpC06mSFgCxWXGJQgqfdA5CUvKKY"
-        dbHelperObj.loadBrandsAndSpecs(1, apiKey, productId) {
-            var detailedProduct = dbHelperObj.getProductDetails(productId)
-
-            productName.text = detailedProduct.modelName
-            productPriceText.text = detailedProduct.lowestPrice.toString()
-            productRatingText.text = detailedProduct.rating.toString()
-            mainSpecifications.append(detailedProduct.mainSpecs)
-            rearCameraSpecs.text = detailedProduct.rearCamera
-            frontCameraSpecs.text = detailedProduct.frontCamera
-            screenResolutionSpecs.text = detailedProduct.ScreenResolution
-            screenSizeSpecs.text = detailedProduct.ScreenSize
-            processorSpecs.text = detailedProduct.processor
-            internalMemorySpecs.text = detailedProduct.internalMemory
-            ramSpecs.text = detailedProduct.ram
-            batterySpecs.text = detailedProduct.battery
 
 
-            priceComparingList = dbHelperObj.getPrices(productId)
-            buildComparingList(0)
+        val sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        val lastSync = sharedPreferences.getLong(productId, -1)
+
+        val priceList = dbHelperObj.getPrices(productId)
+
+        var dbHelper = FeedReaderDbHelper(this)
+        if (TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastSync) > 60 && lastSync != -1L && !priceList.isEmpty()) {
+            val dbLocal = dbHelper.writableDatabase
+            dbLocal.delete(FeedReaderContract.FeedPricesEntry.TABLE_NAME, FeedReaderContract.FeedPricesEntry.COLUMN_PRODUCT_ID + "='" + productId + "'", null)
+            dbLocal.delete(FeedReaderContract.FeedSpecsEntry.TABLE_NAME, FeedReaderContract.FeedSpecsEntry.COLUMN_ID + "='" + productId + "'", null)
         }
+
+        val dbR = dbHelper.readableDatabase
+        val idSelection = "${FeedReaderContract.FeedSpecsEntry.COLUMN_ID} LIKE ?"
+        val idSelectionArgs = arrayOf(productId)
+        val cursor = dbR.query(
+            FeedReaderContract.FeedSpecsEntry.TABLE_NAME,   // The table to query
+            null,             // The array of columns to return (pass null to get all)
+            null,              // The columns for the WHERE clause
+            null,          // The values for the WHERE clause
+            null,                   // don't group the rows
+            null,                   // don't filter by row groups
+            null               // The sort order
+        )
+
+        val idList = ArrayList<String>()
+        with(cursor) {
+            while (moveToNext()) {
+                idList.add(getString(cursor.getColumnIndexOrThrow("id")))
+            }
+        }
+        cursor.close()
+        dbR.close()
+
+        if (idList.isEmpty() || lastSync == -1L || TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastSync) > 60) {
+            val dbH = DbHelper()
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putLong(productId, System.currentTimeMillis())
+            editor.apply()
+            dbH.loadBrandsAndSpecs(1, apiKey, productId) {
+                callback(dbHelperObj, productId)
+            }
+        } else {
+            callback(dbHelperObj, productId)
+        }
+    }
+
+    fun callback (dbHelperObj: DbHelper, productId: String) {
+        var detailedProduct = dbHelperObj.getProductDetails(productId)
+
+        productName.text = detailedProduct.modelName
+        productPriceText.text = detailedProduct.lowestPrice.toString()
+        productRatingText.text = detailedProduct.rating.toString()
+        mainSpecifications.append(detailedProduct.mainSpecs)
+        rearCameraSpecs.text = detailedProduct.rearCamera
+        frontCameraSpecs.text = detailedProduct.frontCamera
+        screenResolutionSpecs.text = detailedProduct.ScreenResolution
+        screenSizeSpecs.text = detailedProduct.ScreenSize
+        processorSpecs.text = detailedProduct.processor
+        internalMemorySpecs.text = detailedProduct.internalMemory
+        ramSpecs.text = detailedProduct.ram
+        batterySpecs.text = detailedProduct.battery
+
+
+        priceComparingList = dbHelperObj.getPrices(productId)
+        buildComparingList(0)
     }
 
     private fun buildComparingList(sortType: Int){
@@ -130,7 +178,9 @@ class ProductDetailsActivity : AppCompatActivity() {
             shop.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
             shop.text = item.shop
             shop.setTextColor(Color.BLACK)
+            shop.setTypeface(null, Typeface.BOLD)
             shop.gravity = Gravity.CENTER
+            //shop.setPadding(0, 30, 0, 20)
             tableRow.addView(shop)
 
             val url = TextView(this)
@@ -139,7 +189,9 @@ class ProductDetailsActivity : AppCompatActivity() {
             url.setTextColor(Color.DKGRAY)
             urlParams.weight = 1f
             url.layoutParams = urlParams
-            url.autoLinkMask = Linkify.WEB_URLS;
+            url.autoLinkMask = Linkify.WEB_URLS
+            url.maxLines = 2
+            url.setPadding(0, 65, 0, 65)
             Linkify.addLinks(url, Linkify.WEB_URLS)
             url.linksClickable = true
 
@@ -149,7 +201,9 @@ class ProductDetailsActivity : AppCompatActivity() {
             price.layoutParams = TableRow.LayoutParams(pxFromDp(96), TableRow.LayoutParams.MATCH_PARENT)
             price.text = item.price.toString()
             price.setTextColor(Color.BLACK)
+            price.setTypeface(null, Typeface.BOLD)
             price.gravity = Gravity.CENTER
+            //price.setPadding(0, 30, 0, 20)
             tableRow.addView(price)
 
             findViewById<LinearLayout>(R.id.price_list).addView(tableRow)

@@ -1,8 +1,6 @@
 package com.example.pricecompare
 
-import android.app.PendingIntent.getActivity
 import android.content.ContentValues
-import android.content.Context
 import android.provider.BaseColumns
 import android.widget.Toast
 import com.android.volley.Request
@@ -12,6 +10,43 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
 class DbHelper {
+
+    fun loadProductList(page: Int, apiKey: String) {
+        val queue = Volley.newRequestQueue(MyApplication.getAppContext())
+        val url = "https://price-api.datayuge.com/api/v1/compare/search?api_key=${apiKey}&page=${page}"
+        var queueEl = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                val jsonArr = JSONObject(response).getJSONArray("data")
+                val dbHelper = FeedReaderDbHelper(MyApplication.getAppContext())
+                val dbLocal = dbHelper.writableDatabase
+
+                val categoryValues = ContentValues().apply {
+                    put(FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME, "Mobiles")
+                }
+
+                //dbLocal.delete(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, null)
+
+                val categoryRowId = dbLocal?.insert(FeedReaderContract.FeedCategoryEntry.TABLE_NAME, null, categoryValues)
+                for (i in 0 until jsonArr.length()) {//////////////
+                    val product = jsonArr.getJSONObject(i)
+
+                    val values = ContentValues().apply {
+                        put(FeedReaderContract.FeedProductEntry.COLUMN_ID, product.getString("product_id"))
+                        put(FeedReaderContract.FeedProductEntry.COLUMN_MODEL_NAME, product.getString("product_title"))
+                        put(FeedReaderContract.FeedProductEntry.COLUMN_LOWEST_PRICE, product.getString("product_lowest_price"))
+                        put(FeedReaderContract.FeedProductEntry.COLUMN_IMAGE_URL, product.getString("product_image"))
+                        put(FeedReaderContract.FeedProductEntry.COLUMN_CATEGORY_ID, 1)
+                    }
+
+                    val newRowId = dbLocal?.insert(FeedReaderContract.FeedProductEntry.TABLE_NAME, null, values)
+                }
+                dbLocal.close()
+                dbHelper.close()
+            },
+            Response.ErrorListener { "That didn't work!" })
+        queue.add(queueEl)
+    }
 
     fun getProductList(): ArrayList<Product> {
         val dbHelper = FeedReaderDbHelper(MyApplication.getAppContext())
@@ -133,8 +168,6 @@ class DbHelper {
 
 
                 val shopProjection = arrayOf(FeedReaderContract.FeedShopsEntry.COLUMN_SHOP_NAME)
-
-                //val sortOrder = "${FeedReaderContract.FeedCategoryEntry.COLUMN_CATEGORY_NAME} DESC"
 
                 val shopCursor = dbRead.query(
                     FeedReaderContract.FeedShopsEntry.TABLE_NAME,   // The table to query
@@ -453,7 +486,7 @@ class DbHelper {
                 val shopId = getInt(priceCursor.getColumnIndexOrThrow(FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_ID))
                 val url = getString(priceCursor.getColumnIndexOrThrow(FeedReaderContract.FeedPricesEntry.COLUMN_SHOP_URL))
                 val price = getInt(priceCursor.getColumnIndexOrThrow(FeedReaderContract.FeedPricesEntry.COLUMN_PRICE))
-                priceList.add(Price(shopList[shopId], url, price))
+                priceList.add(Price(shopList[shopId - 1], url, price))
             }
         }
         dbR.close()
