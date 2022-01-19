@@ -107,13 +107,13 @@ This project is a mobile application for comparing prices on different smartphon
 ![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/use_case_diagram.png?raw=true)
 ### Business processes diagrams
 #### Finding necessary product business process
-![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/use_case_diagram.png?raw=true)
+![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/finding_necessary_product_business_process_diagram.png?raw=true)
 #### Choosing the right shop's suggestion business process
-![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/use_case_diagram.png?raw=true)
+![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/choosing_the_right_shop's_suggestion_business_process_diagram.png?raw=true)
 ### ER diagram
-![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/use_case_diagram.png?raw=true)
+![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/er_diagram.png?raw=true)
 ### Architectural diagram
-![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/use_case_diagram.png?raw=true)
+![alt text](https://github.com/MykolaOnyshchuk/PriceComparingMobileApp/blob/master/diagrams/architectural_diagram.png?raw=true)
 
 ## Future plans
 * add more categories
