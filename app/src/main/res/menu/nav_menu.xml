@@ -29,11 +29,10 @@
     <item android:title="@string/sort">
         <menu>
             <item
-                app:actionLayout="@layout/sorting"
-                app:showAsAction="always"
                 android:id="@+id/nav_radios"
                 android:title=""
-                />
+                app:actionLayout="@layout/sorting"
+                app:showAsAction="always" />
 
         </menu>
     </item>
